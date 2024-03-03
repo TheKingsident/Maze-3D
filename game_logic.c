@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
 #include "maze_3D.h"
 
 
@@ -26,6 +27,9 @@ void gameLoop(Game *game)
 		}
 		SDL_SetRenderDrawColor(game->renderer, 0, 0, 0, 255);
 		SDL_RenderClear(game->renderer);
+
+        SDL_Rect srcRect, destRect;
+
 
 		for (int x = 0; x < screenWidth; x++)
 		{
@@ -77,40 +81,54 @@ void gameLoop(Game *game)
                 perpWallDist = fabs((mapX - game->posX + (1 - stepX) / 2) / rayDirX);
             else
                 perpWallDist = fabs((mapY - game->posY + (1 - stepY) / 2) / rayDirY);
+
+            float hitX;
+            if (side == 0) {
+                hitX = game->posY + perpWallDist * rayDirY;
+            } else {
+                hitX = game->posX + perpWallDist * rayDirX;
+            }
+            hitX -= floor(hitX);  // Normalize to a value between 0 and 1
+
             int h = screenHeight;
             int lineHeight = (int)(3 * h / perpWallDist);
+
             int drawStart = -lineHeight / 2 + h / 2;
             if (drawStart < 0)
                 drawStart = 0;
             int drawEnd = lineHeight / 2 + h / 2;
             if (drawEnd >= h)
                 drawEnd = h - 1;
-            ColorRGB color;
-            switch ((*worldMap)[mapX][mapY]) {
-            case 1:
-                color = RGB_Red;
-                break;
-            case 2:
-                color = RGB_Green;
-                break;
-            case 3:
-                color = RGB_Blue;
-                break;
-            case 4:
-                color = RGB_White;
-                break;
-            default:
-                color = RGB_Yellow;
-                break;
+
+            int texNum = (*worldMap)[mapX][mapY] - 1; // Assuming your textures start from 1 in the map
+            float wallX = side == 0 ? game->posY + perpWallDist * rayDirY : game->posX + perpWallDist * rayDirX;
+            wallX -= floor(wallX);
+
+            int texX = (int)(wallX * (float)TEX_WIDTH);
+            if ((side == 0 && rayDirX > 0) || (side == 1 && rayDirY < 0)) {
+                texX = TEX_WIDTH - texX - 1;
             }
-            if (side == 1) {
-                color.r /= 2;
-                color.g /= 2;
-                color.b /= 2;
+
+            srcRect.x = texX;
+            srcRect.y = 0;
+            srcRect.w = 1; // We're only drawing a single column of the texture
+            srcRect.h = TEX_HEIGHT;
+
+            destRect.x = x;
+            destRect.y = drawStart;
+            destRect.w = 1; // Corresponds to the width of the source rectangle
+            destRect.h = drawEnd - drawStart;
+
+            if (texNum >= 0 && texNum < NUM_TEXTURES) {
+                SDL_RenderCopy(game->renderer, game->textures[texNum], &srcRect, &destRect);
+            } else {
+                // Fallback to a solid color if the texture index is out of range
+                ColorRGB color = {255, 0, 0}; // Red, for example
+                SDL_SetRenderDrawColor(game->renderer, color.r, color.g, color.b, 255);
+                SDL_RenderDrawLine(game->renderer, x, drawStart, x, drawEnd);
             }
-            verLine(game->renderer, x, drawStart, drawEnd, color);
-            SDL_SetRenderDrawColor(game->renderer, color.r, color.g, color.b, 255);
-            SDL_RenderDrawLine(game->renderer, x, drawStart, x, drawEnd);
+
+
         }
 
         game->oldTime = game->time;
@@ -177,7 +195,9 @@ void handleMovement(Game *game, const Uint8 *state, float moveSpeed, float rotSp
  * initSDL - Initializes SDL and TTF.
  * @game: The game state to initialize.
  */
-void initSDL(Game *game) {
+void initSDL(Game *game)
+{
+    SDL_Surface *tempSurface;
     SDL_Init(SDL_INIT_VIDEO);
     if (TTF_Init() == -1) {
         printf("TTF_Init: %s\n", TTF_GetError());
@@ -204,6 +224,28 @@ void initSDL(Game *game) {
     game->time = 0;
     game->oldTime = 0;
 
+    const char *textureFiles[NUM_TEXTURES] = {
+        "assets/textures/fencing.jpg",
+        "assets/textures/marble1.jpg",
+        "assets/textures/marble2.jpg",
+        "assets/textures/marble3.jpg",
+        "assets/textures/marble4.jpg",
+        "assets/textures/marble5.jpg",
+        "assets/textures/white_marble_texture.jpg",
+        "assets/textures/wooden_1.jpg"
+    };
+
+    for (int i = 0; i < NUM_TEXTURES; i++)
+    {
+        tempSurface = IMG_Load(textureFiles[i]);
+        if (!tempSurface)
+        {
+            printf("Failed to load texture: %s\n", IMG_GetError());
+            // Handle error (e.g., exit the program)
+        }
+        game->textures[i] = SDL_CreateTextureFromSurface(game->renderer, tempSurface);
+        SDL_FreeSurface(tempSurface);
+    }
 }
 
 
@@ -211,9 +253,16 @@ void initSDL(Game *game) {
  * cleanup - Cleans up resources before exiting the program.
  * @game: The game state to clean up.
  */
-void cleanup(Game *game) {
+void cleanup(Game *game)
+{
     TTF_CloseFont(game->font);
     TTF_Quit();
+
+    for (int i = 0; i < NUM_TEXTURES; i++)
+    {
+        SDL_DestroyTexture(game->textures[i]);
+    }
+
     SDL_DestroyRenderer(game->renderer);
     SDL_DestroyWindow(game->window);
     SDL_Quit();

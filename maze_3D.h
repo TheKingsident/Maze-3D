@@ -9,8 +9,11 @@
 
 #define mapWidth 24
 #define mapHeight 24
+#define TEX_HEIGHT 256
+#define TEX_WIDTH 256
 #define screenWidth 800
 #define screenHeight 600
+#define NUM_TEXTURES 8
 
 
 int (*getWorldMap(void))[mapWidth][mapHeight];
@@ -46,6 +49,7 @@ typedef struct ColorRGB
  * @planeY: Y component of the camera plane.
  * @time: Current frame time.
  * @oldTime: Previous frame time.
+ * @textures: Texture to apply.
  */
 typedef struct Game
 {
@@ -56,7 +60,9 @@ typedef struct Game
 	float dirX, dirY;
 	float planeX, planeY;
 	float time, oldTime;
+	SDL_Texture *textures[NUM_TEXTURES];
 } Game;
+
 
 
 extern ColorRGB RGB_Red;
