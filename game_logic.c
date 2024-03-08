@@ -356,16 +356,9 @@ void initSDL(Game *game)
             printf("Failed to load texture: %s\n", IMG_GetError());
             // Handle error (e.g., exit the program)
         }
-        game->textures[i] = SDL_CreateTexture(game->renderer,
-                SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
-                tempSurface->w, tempSurface->h);
+        game->textures[i] =  SDL_CreateTextureFromSurface(game->renderer, tempSurface);
         
-        if (!game->textures[i])
-        {
-            printf("Failed to create texture: %s\n", SDL_GetError());
-            // Handle error (e.g., exit the program)
-        }
-        SDL_UpdateTexture(game->textures[i], NULL, tempSurface->pixels, tempSurface->pitch);
+        
         SDL_FreeSurface(tempSurface);
     }
 
