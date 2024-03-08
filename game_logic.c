@@ -25,7 +25,7 @@ void gameLoop(Game *game)
 			if (e.type == SDL_QUIT)
 				break;
 		}
-		SDL_SetRenderDrawColor(game->renderer, 135, 206, 235, 255);
+		SDL_SetRenderDrawColor(game->renderer, 0, 0, 235, 100);
 		SDL_RenderClear(game->renderer);
 
         SDL_Rect srcRect, destRect;
