@@ -62,7 +62,7 @@ typedef struct Game
 	float dirX, dirY;
 	float planeX, planeY;
 	float time, oldTime;
-	SDL_Texture *textures[NUM_TEXTURES];
+	SDL_Texture * textures[NUM_TEXTURES];
 	SDL_Texture *floorTexture;
 	int drawEnd;
 } Game;
