@@ -9,8 +9,11 @@
 
 #define mapWidth 24
 #define mapHeight 24
+#define TEX_HEIGHT 200
+#define TEX_WIDTH 200
 #define screenWidth 800
 #define screenHeight 600
+#define NUM_TEXTURES 9
 
 
 int (*getWorldMap(void))[mapWidth][mapHeight];
@@ -46,6 +49,9 @@ typedef struct ColorRGB
  * @planeY: Y component of the camera plane.
  * @time: Current frame time.
  * @oldTime: Previous frame time.
+ * @textures: Texture to apply.
+ * @floorTexture: Floor texture
+ * @drawEnd: Y-coordinate of the end of the wall slice
  */
 typedef struct Game
 {
@@ -56,7 +62,11 @@ typedef struct Game
 	float dirX, dirY;
 	float planeX, planeY;
 	float time, oldTime;
+	SDL_Texture * textures[NUM_TEXTURES];
+	SDL_Texture *floorTexture;
+	int drawEnd;
 } Game;
+
 
 
 extern ColorRGB RGB_Red;
@@ -69,11 +79,19 @@ extern ColorRGB RGB_Grey;
 void initSDL(Game *game);
 void gameLoop(Game *game);
 void renderText(SDL_Renderer *renderer, TTF_Font *font, const char *text,
-SDL_Color color, int x, int y);
+					SDL_Color color, int x, int y);
 void verLine(SDL_Renderer *renderer, int x, int drawStart, int drawEnd,
-ColorRGB color);
+					ColorRGB color);
+void renderFloor(SDL_Renderer *renderer, SDL_Texture *floorTexture,
+Game *game, int screenWidthParam, int screenHeightParam, int drawEnd);
+Uint32 get_pixel(SDL_Texture *texture, int x, int y);
+void put_pixel(SDL_Renderer *renderer, int x, int y, Uint32 color);
 void handleMovement(Game *game, const Uint8 *state, float moveSpeed,
-float rotSpeed);
+						float rotSpeed);
+SDL_Texture *loadStreamingTexture(const char *filePath,
+									SDL_Renderer *renderer);
+Uint32 *lockTextureAndGetPixels(SDL_Texture *texture, int *pitch);
+void unlockTexture(SDL_Texture *texture);
 void cleanup(Game *game);
 
 #endif /* MAZE_3D_H */
