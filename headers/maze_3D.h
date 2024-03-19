@@ -9,10 +9,10 @@
 
 #define mapWidth 24
 #define mapHeight 24
-#define TEX_HEIGHT 200
-#define TEX_WIDTH 200
-#define screenWidth 800
-#define screenHeight 600
+#define TEX_HEIGHT 64
+#define TEX_WIDTH 64
+#define screenWidth 1080
+#define screenHeight 720
 #define NUM_TEXTURES 9
 
 
@@ -34,6 +34,29 @@ typedef struct ColorRGB
 	int g;
 	int b;
 } ColorRGB;
+
+
+/**
+ * struct RaycastResult - Structure to store the result of a raycast operation.
+ *
+ * @perpWallDist: The perpendicular distance from the player's position
+ * to the wall hit by the ray.
+ * @side: Indicates which side of the wall was hit by the ray
+ * (0 for X-axis, 1 for Y-axis).
+ * @mapX: The X-coordinate in the map where the wall was hit.
+ * @mapY: The Y-coordinate in the map where the wall was hit.
+ * @rayDirX: The X-component of the ray's direction.
+ * @rayDirY: The Y-component of the ray's direction.
+ */
+typedef struct RaycastResult
+{
+	float perpWallDist;
+	int side;
+	int mapX;
+	int mapY;
+	float rayDirX;
+	float rayDirY;
+} RaycastResult;
 
 
 /**
@@ -68,30 +91,18 @@ typedef struct Game
 } Game;
 
 
-
-extern ColorRGB RGB_Red;
-extern ColorRGB RGB_Green;
-extern ColorRGB RGB_Blue;
-extern ColorRGB RGB_White;
-extern ColorRGB RGB_Yellow;
-extern ColorRGB RGB_Grey;
-
 void initSDL(Game *game);
 void gameLoop(Game *game);
+void renderScene(Game *game);
+void renderFPS(Game *game, float frameTime);
 void renderText(SDL_Renderer *renderer, TTF_Font *font, const char *text,
 					SDL_Color color, int x, int y);
 void verLine(SDL_Renderer *renderer, int x, int drawStart, int drawEnd,
 					ColorRGB color);
-void renderFloor(SDL_Renderer *renderer, SDL_Texture *floorTexture,
-Game *game, int screenWidthParam, int screenHeightParam, int drawEnd);
-Uint32 get_pixel(SDL_Texture *texture, int x, int y);
-void put_pixel(SDL_Renderer *renderer, int x, int y, Uint32 color);
 void handleMovement(Game *game, const Uint8 *state, float moveSpeed,
 						float rotSpeed);
 SDL_Texture *loadStreamingTexture(const char *filePath,
 									SDL_Renderer *renderer);
-Uint32 *lockTextureAndGetPixels(SDL_Texture *texture, int *pitch);
-void unlockTexture(SDL_Texture *texture);
 void cleanup(Game *game);
 
 #endif /* MAZE_3D_H */
