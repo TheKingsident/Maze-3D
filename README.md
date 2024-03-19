@@ -1,6 +1,20 @@
 # Maze 3D Renderer
 
-This project is a simple 3D maze renderer using raycasting techniques similar to early 3D games like Wolfenstein 3D. The application is written in C and utilizes the SDL2 library for rendering.
+This project is a simple 3D maze renderer using raycasting techniques similar to early 3D games like Wolfenstein 3D. The application is written in C and utilizes the SDL2 library for rendering. It is solely developed by [Kingsley Usa](https://www.linkedin.com/in/thekingsident/)
+
+![Maze 3D Game Screenshot](Screenshot_2024-03-13_221743.png)
+
+Explore the maze in 3D at the deployed site: [Maze3D](https://maze3d.carrd.co/). Stay tuned for an in-depth dive into the development process in the upcoming blog article.
+
+## Introduction
+
+This project aims to recreate the magic of labyrinth exploration with a modern twist. Using the SDL2 library, the Maze 3D Renderer is crafted in C and showcases the power of low-level programming in creating immersive experiences.
+
+Check out the live version [here](https://maze3d.carrd.co/).
+
+Read more about the development journey in the [final project blog article](#).
+
+Connect with the author on LinkedIn: [Your LinkedIn Profile](https://www.linkedin.com/in/thekingsident/)
 
 ## Features
 
@@ -20,6 +34,21 @@ To run this project, you'll need to have SDL2, SDL2_image, and SDL2_ttf installe
 2. Install SDL2_image: Follow the instructions [here](https://www.libsdl.org/projects/SDL_image/).
 3. Install SDL2_ttf: Follow the instructions [here](https://www.libsdl.org/projects/SDL_ttf/).
 
+## Installation
+
+Ensure you have SDL2, SDL2_image, and SDL2_ttf libraries installed to run this project.
+
+```bash
+# For Ubuntu/Debian
+sudo apt-get install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
+
+# For Fedora
+sudo dnf install SDL2-devel SDL2_image-devel SDL2_ttf-devel
+
+# For Arch Linux
+sudo pacman -S sdl2 sdl2_image sdl2_ttf
+```
+
 ## Compilation
 
 Use the following command to compile the game:
@@ -35,7 +64,7 @@ After compiling, you can run the game with:
 ```sh
 ./Maze_3D
 ```
-
+t
 ## Controls
 
 - **W/A/S/D**: Move forward/left/back/right
