@@ -1,16 +1,10 @@
 # Maze 3D Renderer
 
-<p align="center">
-  <img src="![https://github.com/TheKingsident/Maze-3D/tree/main/assets/maze_3D_screenshot.png](https://github.com/TheKingsident/Maze-3D/blob/main/assets/maze_3D_screenshot.png)"
-       alt="Maze 3D"
-  />
-</p>
 
-![alt text](https://github.com/TheKingsident/Maze-3D/blob/main/assets/maze_3D_screenshot.png)
+![Maze 3D Game Screenshot](https://github.com/TheKingsident/Maze-3D/blob/main/assets/maze_3D_screenshot.png)
 
 This project is a simple 3D maze renderer using raycasting techniques similar to early 3D games like Wolfenstein 3D. The application is written in C and utilizes the SDL2 library for rendering. It is solely developed by [Kingsley Usa](https://www.linkedin.com/in/thekingsident/)
 
-![Maze 3D Game Screenshot](Screenshot_2024-03-13_221743.png)
 
 Explore the maze in 3D at the deployed site: [Maze3D](https://maze3d.carrd.co/). Stay tuned for an in-depth dive into the development process in the upcoming blog article.
 
@@ -20,9 +14,9 @@ This project aims to recreate the magic of labyrinth exploration with a modern t
 
 Check out the live version [here](https://maze3d.carrd.co/).
 
-Read more about the development journey in the [final project blog article](#).
+Read more about the development journey in the [final project blog article](https://medium.com/@kingsident/journey-through-the-maze-building-my-3d-game-448c8f2ec9e1).
 
-Connect with the author on LinkedIn: [Your LinkedIn Profile](https://www.linkedin.com/in/thekingsident/)
+Connect with the me on LinkedIn: [Kingsley Usa](https://www.linkedin.com/in/thekingsident/)
 
 ## Features
 
